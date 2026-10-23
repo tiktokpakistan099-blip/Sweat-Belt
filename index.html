@@ -189,7 +189,7 @@ document.getElementById('orderForm').addEventListener('submit',async function(e)
     document.getElementById('mainSite').classList.add('hidden');
     document.getElementById('thankyou').style.display='flex';
     window.scrollTo(0,0);
-    if(window.ttq&&typeof window.ttq.track==='function')window.ttq.track('CompletePayment',{value:total,currency:'PKR',content_id:'sweat-belt',content_type:'product',quantity:Number(dealSelect.value)});
+    if(window.ttq&&typeof window.ttq.track==='function')window.ttq.track('Purchase',{value:total,currency:'PKR',content_id:'sweat-belt',content_type:'product',quantity:Number(dealSelect.value)});
   }catch(err){
     note.textContent='Order could not be sent. Please check your internet connection and try again.';
     note.style.color='#a33';
