@@ -99,6 +99,28 @@
 @media(max-width:760px){.reviews-section{padding:32px 0!important}.reviews-section .wrap{padding:0 14px!important}.reviews-section .review-grid{grid-template-columns:1fr!important;gap:12px!important}.reviews-section .review-card{padding:16px!important;border-radius:13px!important}.review-carousel .review-marquee{gap:22px!important;animation-duration:38s!important}.review-carousel .review-ticker-item{font-size:10px!important}}
 @media(prefers-reduced-motion:reduce){.review-carousel .review-marquee{animation:none!important}}
 </style>
+
+<!-- TikTok Pixel Base Code -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;
+  var ttq=w[t]=w[t]||[];
+  ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"];
+  ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+  for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
+  ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};
+  ttq.load=function(e,n){
+    var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;
+    ttq._i=ttq._i||{};ttq._i[e]=[];ttq._i[e]._u=r;ttq._t=ttq._t||{};ttq._t[e]=+new Date;ttq._o=ttq._o||{};ttq._o[e]=n||{};
+    n=d.createElement("script");n.type="text/javascript";n.async=!0;n.src=r+"?sdkid="+e+"&lib="+t;
+    e=d.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e);
+  };
+  ttq.load('DBDKKVJC77U4J2JQBGLG');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- End TikTok Pixel Base Code -->
+
 </head><body>
 <div class="topbar">CASH ON DELIVERY AVAILABLE ACROSS PAKISTAN · LIMITED-TIME DEALS</div>
 <header class="premium-header"><div class="wrap nav"><a aria-label="Sweat Belt Waist Trimmer" class="brand" href="#home">SWEAT<span>BELT</span><small style="display:block;font-size:9px;letter-spacing:3px;color:#999;font-weight:700;margin-top:-3px">WAIST TRIMMER</small></a><nav class="navlinks"><a href="#benefits">Features</a><a href="#order">Order</a><a href="#reviews">Reviews</a></nav><a class="btn" href="#order" style="padding:11px 18px;font-size:12px">ORDER NOW ↗</a></div></header><section aria-label="Customer feedback ticker" class="review-carousel">
