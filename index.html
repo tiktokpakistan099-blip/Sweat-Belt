@@ -147,5 +147,55 @@
 <script>
 const deals={1:{label:'1 Belt',price:1500},2:{label:'2 Belts',price:2800},3:{label:'3 Belts',price:3800}};const delivery=200;const money=n=>'Rs. '+Number(n).toLocaleString('en-PK');const dealSelect=document.getElementById('dealSelect');function updateSummary(){const d=deals[dealSelect.value];const price=d.price;const ship=delivery;document.getElementById('sumDeal').textContent=d.label;document.getElementById('sumPrice').textContent=money(price);document.getElementById('sumDelivery').textContent=money(ship);document.getElementById('sumTotal').textContent=money(price+ship)}function chooseDeal(n){dealSelect.value=String(n);updateSummary();document.getElementById('order').scrollIntoView({behavior:'smooth'})}dealSelect.addEventListener('change',updateSummary);updateSummary();const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
 // Continuous review ticker is CSS-driven; no buttons or dots.
-document.getElementById('orderForm').addEventListener('submit',function(e){e.preventDefault();if(!this.reportValidity())return;const d=deals[dealSelect.value],price=d.price,ship=delivery,total=price+ship;const data={dateTime:new Date().toISOString(),phone:document.getElementById('phone').value,name:document.getElementById('name').value,address:document.getElementById('address').value,landmark:document.getElementById('landmark').value,city:document.getElementById('city').value,product:'Sweat Belt',deal:d.label,quantity:dealSelect.value,size:'',price:price,deliveryCharges:ship,total:total};document.getElementById('tyName').textContent=data.name;document.getElementById('tyDeal').textContent=data.deal;document.getElementById('tyTotal').textContent=money(total);document.getElementById('mainSite').classList.add('hidden');document.getElementById('thankyou').style.display='flex';window.scrollTo(0,0);if(window.ttq&&typeof window.ttq.track==='function')window.ttq.track('CompletePayment',{value:total,currency:'PKR',content_id:'sweat-belt',content_type:'product',quantity:Number(dealSelect.value)});});function backHome(e){e.preventDefault();document.getElementById('mainSite').classList.remove('hidden');document.getElementById('thankyou').style.display='none';window.scrollTo(0,0)}
+const GOOGLE_SHEETS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbygMGD2cx3LLItq0RlylxNCBYC7-XE5PnGNxke-ocGaOZlosr7P0ycWNpOxxSOkavlX/exec';
+document.getElementById('orderForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+  if(!this.reportValidity())return;
+  const submitButton=this.querySelector('button[type="submit"]');
+  const note=document.getElementById('formNote');
+  const d=deals[dealSelect.value],price=d.price,ship=delivery,total=price+ship;
+  const data={
+    dateTime:new Date().toISOString(),
+    phone:document.getElementById('phone').value.trim(),
+    name:document.getElementById('name').value.trim(),
+    address:document.getElementById('address').value.trim(),
+    landmark:document.getElementById('landmark').value.trim(),
+    city:document.getElementById('city').value.trim(),
+    product:'Sweat Belt',
+    deal:d.label,
+    quantity:Number(dealSelect.value),
+    price:price,
+    deliveryCharges:ship,
+    total:total
+  };
+  if(!GOOGLE_SHEETS_WEB_APP_URL.startsWith('https://script.google.com/macros/s/')){
+    note.textContent='Google Sheets connection setup pending. Add your deployed Apps Script Web App URL first.';
+    note.style.color='#a33';
+    return;
+  }
+  submitButton.disabled=true;
+  submitButton.textContent='SUBMITTING ORDER…';
+  note.textContent='Submitting your order. Please wait…';
+  try{
+    // Apps Script Web Apps can accept this no-cors form post. The browser cannot read the response,
+    // so the customer sees a success page only after the request has been sent.
+    const body=new URLSearchParams();
+    Object.entries(data).forEach(([key,value])=>body.append(key,String(value)));
+    await fetch(GOOGLE_SHEETS_WEB_APP_URL,{method:'POST',mode:'no-cors',body});
+    document.getElementById('tyName').textContent=data.name;
+    document.getElementById('tyDeal').textContent=data.deal;
+    document.getElementById('tyTotal').textContent=money(total);
+    document.getElementById('tyNote').textContent='Your order has been submitted. Please keep your phone available for order confirmation.';
+    document.getElementById('mainSite').classList.add('hidden');
+    document.getElementById('thankyou').style.display='flex';
+    window.scrollTo(0,0);
+    if(window.ttq&&typeof window.ttq.track==='function')window.ttq.track('CompletePayment',{value:total,currency:'PKR',content_id:'sweat-belt',content_type:'product',quantity:Number(dealSelect.value)});
+  }catch(err){
+    note.textContent='Order could not be sent. Please check your internet connection and try again.';
+    note.style.color='#a33';
+  }finally{
+    submitButton.disabled=false;
+    submitButton.textContent='CONFIRM COD ORDER →';
+  }
+});function backHome(e){e.preventDefault();document.getElementById('mainSite').classList.remove('hidden');document.getElementById('thankyou').style.display='none';window.scrollTo(0,0)}
 </script></body></html>
